@@ -80,7 +80,7 @@ const Page = (props) => {
         <div className="leftSide">
           <div className="profile">
             <img className="myImg" src={photo} alt="user" />
-            <p>Hello {firstName + " " + lastName}</p>
+            <p>Hello {firstName + "  " + lastName}</p>
             <p className="Student">Student</p>
           </div>
           <div className="Note">
