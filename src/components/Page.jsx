@@ -157,7 +157,7 @@ const Page = (props) => {
                         </svg>
                       </button>
                       <Link
-                        className="Delete Update"
+                        className="Delete update"
                         to={`/update/${note.id}`}
                       >
                         <svg

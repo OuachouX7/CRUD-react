@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import '../styles/update.css'
+import "../styles/update.css";
 import { useState } from "react";
 
-const Delete = () => {
+const Update = () => {
   const { id } = useParams();
   const [titlee, settitlee] = useState("");
   const [descr, setdescr] = useState("");
@@ -51,13 +51,20 @@ const Delete = () => {
 
   return (
     <div className="update-container">
-      Update {id}
-      <br />
-      <input type="text"  onChange={handletitlee} /><br />
-      <input type="text"  onChange={handleContent} /><br />
-      <button onClick={handleUpdate}> Updateee </button>
+      <div className="updatee">
+        Update {id}
+        <br />
+        <input type="text" onChange={handletitlee} />
+        <br />
+        <input type="text" onChange={handleContent} />
+        <br />
+        <button onClick={handleUpdate} className="Update">
+          {" "}
+          Update{" "}
+        </button>
+      </div>
     </div>
   );
 };
 
-export default Delete;
+export default Update;
