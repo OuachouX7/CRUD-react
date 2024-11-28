@@ -1,0 +1,39 @@
+.formContainer{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(#FEAF00, #F8D442);
+}
+form{
+    width: 30%;
+    background-color: #fff;
+    border-radius: 16px;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+form > input , form > button{
+    width: 80%;
+    height: 8%;
+}
+.login{
+    background-color: #FEAF00;
+    border: none;
+    color: #fff;
+    border-radius: 12px;
+}
+input{
+    margin: 3px 0;
+}
+.bef::before{
+    content: "";
+    border: 5px solid #F8D442;
+    margin: 0 5px;
+}
+.bef{
+    margin: 10px 0 ;
+}
