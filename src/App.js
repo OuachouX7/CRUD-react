@@ -10,9 +10,9 @@ function App() {
 
   return (
     <BrowserRouter>
-    <Routes>
-          <Route path="/update/:id" element={<Update />} />
-        </Routes>
+      <Routes>
+        <Route path="/update/:id" element={<Update />} />
+      </Routes>
       <div className="App">
         {isConnected ? (
           <Page setisConnected={setisConnected} />

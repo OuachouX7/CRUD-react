@@ -8,7 +8,6 @@ const Page = (props) => {
   const myToken = localStorage.getItem("token");
   const firstName = localStorage.getItem("firstName");
   const lastName = localStorage.getItem("lastName");
-
   const [title, settitle] = useState("");
   const [desc, setdesc] = useState("");
   const [notes, setnotes] = useState([]);
@@ -17,19 +16,21 @@ const Page = (props) => {
   const handleTitle = (e) => {
     settitle(e.target.value);
   };
-  //console.log("title :", title);
+
+  const handleRes = (id) => {
+    console.log(id);
+    
+  }
 
   const handleDesc = (e) => {
     setdesc(e.target.value);
   };
-  //console.log("desc :", desc);
 
   const handleForm = () => {
     setisclicked((prev) => !prev);
   };
 
   const handleDelete = (id) => {
-    console.log(id);
     axios.delete(`https://notes.devlop.tech/api/notes/${id}`, {
       headers: {
         Authorization: `Bearer ${myToken}`,
@@ -54,6 +55,7 @@ const Page = (props) => {
     }
   };
 
+
   useEffect(() => {
     axios
       .get("https://notes.devlop.tech/api/notes", {
@@ -72,8 +74,6 @@ const Page = (props) => {
 
   const classNamee = isclicked ? "clicked" : "notclicked";
 
-  //console.log(classNamee);
-
   return (
     <>
       <div className="container">
@@ -84,7 +84,8 @@ const Page = (props) => {
             <p className="Student">Student</p>
           </div>
           <div className="Note">
-            <p className="Note">Notes</p>
+            <button className="Notess" onClick={() => handleRes(1)}>User</button>
+            <button className="Notess" onClick={() => handleRes(2)}>Notes</button>
           </div>
           <button className="LogOut" onClick={LogOut}>
             Log Out

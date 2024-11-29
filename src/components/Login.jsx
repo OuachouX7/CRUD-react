@@ -12,14 +12,16 @@ const Login = (props) => {
 //     </Routes>
 //   </BrowserRouter>
     const [cin,setcin] = useState("JH90640")
-    const [password,setpassword] = useState('123456')
+    const [password,setpassword] = useState('12340987')
     
     const handleBtn = (e) => {
         e.preventDefault()
         axios.post(`https://notes.devlop.tech/api/login`,{"cin" : cin,
             "password" : password
         })
-        .then(res => {    
+        .then(res => {   
+            console.log(res);
+             
             localStorage.setItem('firstName',res.data.user.first_name)
             localStorage.setItem('lastName',res.data.user.last_name)
             localStorage.setItem('token',res.data.token)

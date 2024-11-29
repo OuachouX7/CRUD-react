@@ -40,11 +40,22 @@ svg {
   width: 15px;
   height: 15px;
 }
-.Note {
+.Note{
+  display: flex;
+  flex-direction: column;
+  height: 10%;
+  align-items: center;
+  justify-content: space-between;
+}
+.Notess {
   background-color: #feaf00;
   width: 80%;
   display: flex;
   justify-content: center;
+  border: none;
+  min-width: 130px;
+  max-width: 140px;
+  padding: 5px 20px;
   border-radius: 8px;
 }
 .rightSide {

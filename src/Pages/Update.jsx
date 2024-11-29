@@ -1,30 +1,24 @@
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../styles/update.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Update = () => {
   const { id } = useParams();
   const [titlee, settitlee] = useState("");
   const [descr, setdescr] = useState("");
-  const [tc, settc] = useState({
-    title: "",
-    content: "",
-  });
   const myToken = localStorage.getItem("token");
-
-  axios
-    .get(`https://notes.devlop.tech/api/notes/${id}`, {
-      headers: {
-        Authorization: `Bearer ${myToken}`,
-      },
-    })
-    .then((res) =>
-      settc({
-        title: res.data.title,
-        content: res.data.content,
+  
+  useEffect(() => {
+    axios
+      .get(`https://notes.devlop.tech/api/notes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${myToken}`,
+        },
       })
-    );
+      .then((res) => console.log(res));
+  }, [id, myToken]);
 
   const handletitlee = (e) => {
     settitlee(e.target.value);
@@ -62,6 +56,7 @@ const Update = () => {
           {" "}
           Update{" "}
         </button>
+        <Link to="/">Home</Link>
       </div>
     </div>
   );
