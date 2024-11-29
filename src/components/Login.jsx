@@ -47,10 +47,10 @@ const Login = (props) => {
                 <h2>SIGN IN</h2>
                 <p>Enter your infos to access your account</p>
                 <label>CIN</label>
-                <input type="text" value={cin} placeholder="entrez votre cin" onChange={handleCin} />
+                <input className="myLogin" type="text" value={cin} placeholder="entrez votre cin" onChange={handleCin} />
                 <br />
                 <label>Passowrd</label>
-                <input type="password" value={password} placeholder="entrez votre password" onChange={handlePw} />
+                <input className="myLogin" type="password" value={password} placeholder="entrez votre password" onChange={handlePw} />
                 <br />
                 <button className="login" onClick={handleBtn}>Submit</button>
             </form>
