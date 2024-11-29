@@ -139,3 +139,9 @@ table > tr > td {
     background-color: transparent;
     color: #ACACAC;
 }
+.myLoginn{
+  border-radius: 6px;
+  border: 1px solid #817e7e;
+  text-align: center;
+  padding: 5px;
+}

@@ -148,13 +148,13 @@ const Page = (props) => {
           <div className={classNamee}>
             <input
               type="text"
-              className="title"
+              className="myLoginn"
               onChange={handleTitle}
               placeholder="title"
             />
             <input
               type="text"
-              className="desc"
+              className="myLoginn"
               onChange={handleDesc}
               placeholder="description"
             />
