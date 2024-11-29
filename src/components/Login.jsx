@@ -11,8 +11,8 @@ const Login = (props) => {
 //       <Route path="/delete" element={<Delete />} />
 //     </Routes>
 //   </BrowserRouter>
-    const [cin,setcin] = useState("JH90640")
-    const [password,setpassword] = useState('111111')
+    const [cin,setcin] = useState("")
+    const [password,setpassword] = useState('')
     
     const handleBtn = (e) => {
         e.preventDefault()
