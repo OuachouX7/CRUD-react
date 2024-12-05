@@ -145,6 +145,7 @@ const Right = () => {
               }}
             >
               <svg
+              style={{filter:"invert(100%)"}}
                 className={isclicked ? "arrowdown" : "arrowup"}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"
@@ -243,7 +244,7 @@ const Right = () => {
                 whileHover={{
                   rotate: 180,
                 }}
-                style={{ filter: "invert(1)" }}
+                style={{ filter: "invert(1)" ,width:"100%",height:"100%"}}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"
               >
@@ -267,6 +268,7 @@ const Right = () => {
           />
           <br />
           <motion.button
+          style={{padding:"5px 20px"}}
             whileHover={{
               scale: 1.3,
             }}

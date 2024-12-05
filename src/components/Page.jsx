@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Right from "./Right";
 import { useState } from "react";
 import User from "./User";
+import Loading from "./Loading";
 
 const Page = (props) => {
   const firstName = localStorage.getItem("firstName");
@@ -39,7 +40,7 @@ const Page = (props) => {
           <div className="Note">
             <motion.button
               whileHover={{
-                scale: 1.3,
+                scale: 1.1,
               }}
               className="Notess"
               onClick={() => handleRes(1)}
@@ -48,7 +49,7 @@ const Page = (props) => {
             </motion.button>
             <motion.button
               whileHover={{
-                scale: 1.3,
+                scale: 1.1,
               }}
               className="Notess"
               onClick={() => handleRes(2)}
@@ -58,7 +59,7 @@ const Page = (props) => {
           </div>
           <motion.button
             whileHover={{
-              scale: 1.3,
+              scale: 1.2,
             }}
             className="LogOut"
             onClick={LogOut}
@@ -69,7 +70,13 @@ const Page = (props) => {
             </svg>
           </motion.button>
         </div>
-        {res}
+        {res ? (
+          res
+        ) : (
+          <div style={{ width: "100%", height: "100vh" }}>
+            <Loading />
+          </div>
+        )}
       </div>
     </>
   );
