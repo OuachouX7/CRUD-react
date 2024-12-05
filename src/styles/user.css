@@ -1,0 +1,29 @@
+.user{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2   0px;
+    width: 100%;
+}
+.Change{
+    background-color: #feaf00;
+  border: none;
+  color: #fff;
+  padding: 6px 20px;
+  border-radius: 12px;
+
+}
+.change{
+    text-align: center;
+  background-color: transparent;
+  padding: 10px;
+  border: 1px solid #9d9d9d;
+  border-radius: 10px;
+  margin: 0 5px;
+}
+.down{
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    height: 70vh;
+}
