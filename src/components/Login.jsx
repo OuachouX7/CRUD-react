@@ -8,12 +8,12 @@ const Login = (props) => {
     const [password,setpassword] = useState('12340987')
     
     const handleBtn = (e) => {
+        
         e.preventDefault()
         axios.post(`https://notes.devlop.tech/api/login`,{"cin" : cin,
             "password" : password
         })
         .then(res => {   
-            console.log(res);
              
             localStorage.setItem('firstName',res.data.user.first_name)
             localStorage.setItem('lastName',res.data.user.last_name)
@@ -45,7 +45,7 @@ const Login = (props) => {
                 <label>Passowrd</label>
                 <input type="password" className="inppp" value={password} placeholder="entrez votre password" onChange={handlePw} />
                 <br />
-                <button className="login" onClick={handleBtn}>Submit</button>
+                <button className="login" onClick={handleBtn}>Login</button>
             </form>
         </div>
     )

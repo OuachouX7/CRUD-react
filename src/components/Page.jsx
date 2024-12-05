@@ -3,6 +3,7 @@ import photo from "../images/Profilee.jpg";
 import "../styles/Page.css";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Loading from "./Loading";
 
 const Page = (props) => {
   const myToken = localStorage.getItem("token");
@@ -14,6 +15,7 @@ const Page = (props) => {
   const [isclicked, setisclicked] = useState(false);
   const [isupdating, setisupdating] = useState(false);
   const [currid, setcurrid] = useState();
+  const [isloading, setisloading] = useState(true);
 
   const handleTitle = (e) => {
     settitle(e.target.value);
@@ -35,18 +37,20 @@ const Page = (props) => {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`https://notes.devlop.tech/api/notes/${id}`, {
-      headers: {
-        Authorization: `Bearer ${myToken}`,
-      },
-    });
+    if (window.confirm("Are you sure you want to delete this note?")) {
+      axios.delete(`https://notes.devlop.tech/api/notes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${myToken}`,
+        },
+      });
+    }
   };
 
   const [titlee, settitlee] = useState("");
   const [descr, setdescr] = useState("");
 
   const settofalse = () => {
-    setisupdating(false);
+    setisupdating(true);
   };
 
   useEffect(() => {
@@ -104,6 +108,8 @@ const Page = (props) => {
   const classup = isupdating ? "willupadte" : "willnotupdate";
 
   useEffect(() => {
+    setisloading(true);
+
     axios
       .get("https://notes.devlop.tech/api/notes", {
         headers: {
@@ -112,7 +118,9 @@ const Page = (props) => {
       })
       .then((res) => {
         setnotes(res.data);
-      });
+        setisloading(false);
+      })
+      .catch((err) => console.log(err));
   }, [myToken]);
 
   const LogOut = () => {
@@ -120,6 +128,8 @@ const Page = (props) => {
   };
 
   const classNamee = isclicked ? "clicked" : "notclicked";
+
+  console.log(isloading);
 
   return (
     <>
@@ -236,7 +246,6 @@ const Page = (props) => {
                           viewBox="0 0 448 512"
                         >
                           <path
-                            fill="#000000"
                             d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"
                           />
                         </svg>
@@ -252,7 +261,7 @@ const Page = (props) => {
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 512 512"
                         >
-                          <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
+                          <path  d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
                         </svg>
                       </motion.button>
                     </td>
@@ -261,6 +270,7 @@ const Page = (props) => {
               </tbody>
             </table>
           </div>
+          <div className="loader">{isloading && <Loading />}</div>
         </div>
         <motion.div
           initial={{
@@ -272,7 +282,7 @@ const Page = (props) => {
             x: 0,
           }}
           transition={{
-            duration: 2,
+            duration: 2.5,
           }}
           className="update-container"
         >
@@ -281,9 +291,9 @@ const Page = (props) => {
               <p>Update {currid}</p>
               <button className="Add" onClick={settofalse}>
                 <motion.svg
-                whileHover={{ 
-                  rotate: 180
-                }}
+                  whileHover={{
+                    rotate: 180,
+                  }}
                   style={{ filter: "invert(1)" }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 384 512"
@@ -308,10 +318,12 @@ const Page = (props) => {
             />
             <br />
             <motion.button
-            whileHover={{
-              scale: 1.3
-            }}
-            onClick={handleUpdatee} className="Update">
+              whileHover={{
+                scale: 1.3,
+              }}
+              onClick={handleUpdatee}
+              className="Update"
+            >
               {" "}
               Update{" "}
             </motion.button>
