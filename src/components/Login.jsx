@@ -2,15 +2,8 @@ import { useState} from "react"
 import axios from 'axios'
 import '../styles/form.css'
 
-// import { Link, Route, BrowserRouter, Routes } from "react-router-dom";
-// import Delete from "../Pages/Delete";
 
 const Login = (props) => {
-//     <BrowserRouter>
-//     <Routes>
-//       <Route path="/delete" element={<Delete />} />
-//     </Routes>
-//   </BrowserRouter>
     const [cin,setcin] = useState("JH90640")
     const [password,setpassword] = useState('12340987')
     
@@ -47,10 +40,10 @@ const Login = (props) => {
                 <h2>SIGN IN</h2>
                 <p>Enter your infos to access your account</p>
                 <label>CIN</label>
-                <input type="text" value={cin} placeholder="entrez votre cin" onChange={handleCin} />
+                <input type="text" className="inppp" value={cin} placeholder="entrez votre cin" onChange={handleCin} />
                 <br />
                 <label>Passowrd</label>
-                <input type="password" value={password} placeholder="entrez votre password" onChange={handlePw} />
+                <input type="password" className="inppp" value={password} placeholder="entrez votre password" onChange={handlePw} />
                 <br />
                 <button className="login" onClick={handleBtn}>Submit</button>
             </form>

@@ -37,3 +37,8 @@ input{
 .bef{
     margin: 10px 0 ;
 }
+.inppp{
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid #999696;
+}
