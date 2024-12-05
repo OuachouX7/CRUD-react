@@ -1,7 +1,6 @@
 import axios from "axios";
 import photo from "../images/Profilee.jpg";
 import "../styles/Page.css";
-import {Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Page = (props) => {
@@ -12,15 +11,14 @@ const Page = (props) => {
   const [desc, setdesc] = useState("");
   const [notes, setnotes] = useState([]);
   const [isclicked, setisclicked] = useState(false);
+  const [isupdating, setisupdating] = useState(false);
+  const [currid, setcurrid] = useState();
 
   const handleTitle = (e) => {
     settitle(e.target.value);
   };
 
-  const handleRes = (id) => {
-    console.log(id);
-    
-  }
+  const handleRes = () => {};
 
   const handleDesc = (e) => {
     setdesc(e.target.value);
@@ -30,12 +28,60 @@ const Page = (props) => {
     setisclicked((prev) => !prev);
   };
 
+  const handleUpdate = (id) => {
+    setisupdating(true);
+    setcurrid(id);
+  };
+
   const handleDelete = (id) => {
     axios.delete(`https://notes.devlop.tech/api/notes/${id}`, {
       headers: {
         Authorization: `Bearer ${myToken}`,
       },
     });
+  };
+
+  const [titlee, settitlee] = useState("");
+  const [descr, setdescr] = useState("");
+
+  const settofalse = () => {
+    setisupdating(false);
+  };
+
+  useEffect(() => {
+    if (currid && myToken) {
+      axios
+        .get(`https://notes.devlop.tech/api/notes/${currid}`, {
+          headers: {
+            Authorization: `Bearer ${myToken}`,
+          },
+        })
+        .then((res) => console.log(res));
+      
+    }
+  }, [currid, myToken]);
+
+  const handletitlee = (e) => {
+    settitlee(e.target.value);
+  };
+
+  const handleContent = (e) => {
+    setdescr(e.target.value);
+  };
+
+  const handleUpdatee = () => {
+    axios.put(
+      `https://notes.devlop.tech/api/notes/${currid}`,
+      {
+        title: titlee,
+        content: descr,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${myToken}`,
+        },
+      }
+    );
   };
 
   const handleAdd = () => {
@@ -55,6 +101,7 @@ const Page = (props) => {
     }
   };
 
+  const classup = isupdating ? "willupadte" : "willnotupdate";
 
   useEffect(() => {
     axios
@@ -84,8 +131,12 @@ const Page = (props) => {
             <p className="Student">Student</p>
           </div>
           <div className="Note">
-            <button className="Notess" onClick={() => handleRes(1)}>User</button>
-            <button className="Notess" onClick={() => handleRes(2)}>Notes</button>
+            <button className="Notess" onClick={() => handleRes(1)}>
+              User
+            </button>
+            <button className="Notess" onClick={() => handleRes(2)}>
+              Notes
+            </button>
           </div>
           <button className="LogOut" onClick={LogOut}>
             Log Out
@@ -103,6 +154,7 @@ const Page = (props) => {
               </button>
               <button className="Add" onClick={handleForm}>
                 <svg
+                style={{filter: "invert(1)"}}
                   className={isclicked ? "arrowdown" : "arrowup"}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 384 512"
@@ -115,13 +167,13 @@ const Page = (props) => {
           <div className={classNamee}>
             <input
               type="text"
-              className="title"
+              className="upd"
               onChange={handleTitle}
               placeholder="title"
             />
             <input
               type="text"
-              className="desc"
+              className="upd"
               onChange={handleDesc}
               placeholder="description"
             />
@@ -157,9 +209,9 @@ const Page = (props) => {
                           />
                         </svg>
                       </button>
-                      <Link
+                      <button
+                        onClick={() => handleUpdate(note.id)}
                         className="Delete update"
-                        to={`/update/${note.id}`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -167,12 +219,31 @@ const Page = (props) => {
                         >
                           <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
                         </svg>
-                      </Link>
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+        <div className="update-container">
+          <div className={classup}>
+            <div className="title-button">
+              <p>Update {currid}</p>
+              <button className="Add" onClick={settofalse}>
+              <svg style={{filter:"invert(1)"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+            </button>
+            </div>
+            <br />
+            <input type="text" className='upd' onChange={handletitlee} placeholder="title"/>
+            <br />
+            <input type="text" className='upd' onChange={handleContent} placeholder="Content"/>
+            <br />
+            <button onClick={handleUpdatee} className="Update">
+              {" "}
+              Update{" "}
+            </button>
           </div>
         </div>
       </div>
