@@ -4,8 +4,8 @@ import '../styles/form.css'
 
 
 const Login = (props) => {
-    const [cin,setcin] = useState("")
-    const [password,setpassword] = useState('')
+    const [cin,setcin] = useState("JH90640")
+    const [password,setpassword] = useState('12340987')
     
     const handleBtn = (e) => {
         
