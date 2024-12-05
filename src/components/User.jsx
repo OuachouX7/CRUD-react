@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "../styles/user.css";
+import { motion } from "framer-motion";
 
 const User = () => {
   const [old, setold] = useState("");
@@ -61,9 +62,13 @@ const User = () => {
             placeholder="Confirm Password"
           />
         </div>
-        <button className="Change" onClick={handlePassword}>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          className="Change"
+          onClick={handlePassword}
+        >
           Confirm Password
-        </button>
+        </motion.button>
       </div>
     </div>
   );
