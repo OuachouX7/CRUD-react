@@ -36,7 +36,7 @@ const Page = (props) => {
     setcurrid(id);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id,e) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
       axios.delete(`https://notes.devlop.tech/api/notes/${id}`, {
         headers: {
@@ -44,6 +44,9 @@ const Page = (props) => {
         },
       });
     }
+    const par = e.target.parentElement;
+    par.closest('tr').remove();
+    
   };
 
   const [titlee, settitlee] = useState("");
@@ -229,7 +232,7 @@ const Page = (props) => {
               </thead>
               <tbody>
                 {notes.map((note) => (
-                  <tr key={note.id}>
+                  <tr className="trr" key={note.id}>
                     <td>{note.id}</td>
                     <td>{note.title}</td>
                     <td>{note.content}</td>
@@ -239,7 +242,7 @@ const Page = (props) => {
                           scale: 1.3,
                         }}
                         className="Delete"
-                        onClick={() => handleDelete(note.id)}
+                        onClick={(e) => handleDelete(note.id,e)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
