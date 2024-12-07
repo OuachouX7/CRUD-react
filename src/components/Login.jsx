@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import "../styles/form.css";
 
 const Login = ({ setisConnected }) => {
-  const [cin, setcin] = useState("");
-  const [password, setpassword] = useState("");
+  const [cin, setcin] = useState("JH90640");
+  const [password, setpassword] = useState("122333444455556");
   const [err, seterr] = useState("");
 
   const handleBtn = (e) => {
@@ -22,10 +22,6 @@ const Login = ({ setisConnected }) => {
       })
       .catch((err) => seterr(err.status));
   };
-
-  if (err === 401) {
-    alert("CIN ou mot de passe incorrect");
-  }
 
   const handleCin = (e) => {
     setcin(e.target.value);
@@ -70,6 +66,7 @@ const Login = ({ setisConnected }) => {
         >
           Login
         </motion.button>
+      {err === 401 && <p className="err">Wrong cin or password</p>}
       </motion.form>
     </div>
   );
