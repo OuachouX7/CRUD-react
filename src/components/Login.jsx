@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import "../styles/form.css";
 
 const Login = ({ setisConnected }) => {
-  const [cin, setcin] = useState("JH90640");
-  const [password, setpassword] = useState("122333444455556");
+  const [cin, setcin] = useState("");
+  const [password, setpassword] = useState("");
   const [err, seterr] = useState("");
 
   const handleBtn = (e) => {
