@@ -24,13 +24,19 @@ const User = () => {
               Authorization: `Bearer ${myToken}`,
             },
           }
+        ).then(
+          alert("Password Updated Successfully")
         );
       }
     }
   };
 
   return (
-    <div className="user">
+    <motion.div className="user"
+    initial={{ opacity: 0,y: 100 }}
+    animate={{ opacity: 1,y: 0 }}
+    transition={{ duration: 0.5 }}
+    >
       <div className="up">
         <h1>Change Password</h1>
       </div>
@@ -54,7 +60,7 @@ const User = () => {
           />
         </div>
         <div>
-          <label>Old Password :</label>
+          <label>Confirm Password :</label>
           <input
             type="text"
             className="change"
@@ -67,10 +73,10 @@ const User = () => {
           className="Change"
           onClick={handlePassword}
         >
-          Confirm Password
+          Change Password
         </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

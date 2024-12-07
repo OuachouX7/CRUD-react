@@ -1,0 +1,61 @@
+button {
+  cursor: pointer;
+}
+.cardsContainer {
+  height: 30vh;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 100%;
+  display: flex;
+}
+.cardOne {
+  display: flex;
+  flex-direction: column;
+  height: 75%;
+  width: 20%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f9ff;
+  border-radius: 8px;
+  margin: 5px;
+}
+.cardTwo {
+  display: flex;
+  flex-direction: column;
+  height: 75%;
+  width: 20%;
+  justify-content: space-between;
+  align-items: center;
+  background-image: linear-gradient(110.42deg, #feaf00 18.27%, #f8d442 91.84%);
+  border-radius: 8px;
+  margin: 5px;
+}
+.upCard {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin-top: 10px;
+  align-items: flex-start;
+}
+.downCard {
+  display: flex;
+  width: 90%;
+  font-size: 30px;
+  font-weight: bold;
+  justify-content: flex-end;
+}
+.homeSvg {
+  width: 48px;
+  height: 38px;
+}
+.homeSvgg {
+  width: 48px;
+  height: 38px;
+}
+.animationContainer {
+  height: 50px;
+  width: 100%;
+}
+button {
+  cursor: pointer;
+}

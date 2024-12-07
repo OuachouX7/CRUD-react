@@ -6,14 +6,16 @@ import { useState } from "react";
 function App() {
   const [isConnected, setisConnected] = useState(false);
 
+  window.onload = () => setisConnected(true);
+
   return (
-      <div className="App">
-        {isConnected ? (
-          <Page setisConnected={setisConnected} />
-        ) : (
-          <Login setisConnected={setisConnected} />
-        )}
-      </div>
+    <div className="App">
+      {isConnected ? (
+        <Page setisConnected={setisConnected} />
+      ) : (
+        <Login setisConnected={setisConnected} />
+      )}
+    </div>
   );
 }
 

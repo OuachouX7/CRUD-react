@@ -1,4 +1,4 @@
-import '../styles/animation.css';
+import "../styles/animation.css";
 
 const Loading = () => {
   return (

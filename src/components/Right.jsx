@@ -9,10 +9,13 @@ const Right = () => {
   const [title, settitle] = useState("");
   const [desc, setdesc] = useState("");
   const [notes, setnotes] = useState([]);
-  const [isclicked, setisclicked] = useState(false);
   const [isupdating, setisupdating] = useState(false);
   const [currid, setcurrid] = useState();
   const [isloading, setisloading] = useState(true);
+  const [uptitle, setuptitle] = useState("");
+  const [upcontent, setUpcontent] = useState("");
+  const [loadingUpdate, setloadingUpdate] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const handleDelete = (id, e) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
@@ -21,9 +24,9 @@ const Right = () => {
           Authorization: `Bearer ${myToken}`,
         },
       });
+      const par = e.target.parentElement;
+      par.closest("tr").remove();
     }
-    const par = e.target.parentElement;
-    par.closest("tr").remove();
   };
 
   const handleTitle = (e) => {
@@ -34,13 +37,25 @@ const Right = () => {
     setdesc(e.target.value);
   };
 
-  const handleForm = () => {
-    setisclicked((prev) => !prev);
+  const toggleModal = () => {
+    setShowModal(!showModal);
   };
 
   const handleUpdate = (id) => {
     setisupdating(true);
+    setloadingUpdate(true);
     setcurrid(id);
+    axios
+      .get(`https://notes.devlop.tech/api/notes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${myToken}`,
+        },
+      })
+      .then((res) => {
+        setuptitle(res.data.title);
+        setUpcontent(res.data.content);
+        setloadingUpdate(false);
+      });
   };
 
   const [titlee, settitlee] = useState("");
@@ -71,34 +86,38 @@ const Right = () => {
   };
 
   const handleUpdatee = () => {
-    axios.put(
-      `https://notes.devlop.tech/api/notes/${currid}`,
-      {
-        title: titlee,
-        content: descr,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${myToken}`,
-        },
-      }
-    );
-  };
-
-  const handleAdd = () => {
-    if (title && desc) {
-      axios.post(
-        "https://notes.devlop.tech/api/notes",
+    axios
+      .put(
+        `https://notes.devlop.tech/api/notes/${currid}`,
         {
-          title: title,
-          content: desc,
+          title: titlee,
+          content: descr,
         },
         {
           headers: {
             Authorization: `Bearer ${myToken}`,
           },
         }
-      );
+      )
+      .then(alert("Note Updated Successfully"), window.location.reload());
+  };
+
+  const handleAdd = () => {
+    if (title && desc) {
+      axios
+        .post(
+          "https://notes.devlop.tech/api/notes",
+          {
+            title: title,
+            content: desc,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${myToken}`,
+            },
+          }
+        )
+        .then(alert("Note Added Successfully"), window.location.reload());
     }
   };
 
@@ -120,8 +139,6 @@ const Right = () => {
       .catch((err) => console.log(err));
   }, [myToken]);
 
-  const classNamee = isclicked ? "clicked" : "notclicked";
-
   return (
     <>
       <div className="rightSide">
@@ -129,46 +146,76 @@ const Right = () => {
           <h2>Notes List</h2>
           <div className="btns">
             <motion.button
-              className="Add"
-              onClick={handleAdd}
-              whileHover={{
-                scale: 1.1,
-              }}
-            >
-              Add New Note
-            </motion.button>
-            <motion.button
-              className="Add"
-              onClick={handleForm}
-              whileHover={{
-                scale: 1.3,
-              }}
-            >
-              <svg
-              style={{filter:"invert(100%)"}}
-                className={isclicked ? "arrowdown" : "arrowup"}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 384 512"
-              >
-                <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
-              </svg>
+            whileHover={{
+              scale: 1.1,
+            }}
+            className="add" onClick={toggleModal}>
+              Add Note
             </motion.button>
           </div>
         </div>
-        <div className={classNamee}>
-          <input
-            type="text"
-            className="upd"
-            onChange={handleTitle}
-            placeholder="title"
-          />
-          <input
-            type="text"
-            className="upd"
-            onChange={handleDesc}
-            placeholder="description"
-          />
-        </div>
+        {showModal && (
+          <div className="modal-overlay">
+            <motion.div
+              initial={{
+                y: 50,
+              }}
+              animate={{
+                y: 0,
+              }}
+              transition={{
+                duration: 0.2,
+              }}
+              className="modal"
+            >
+              <button className="close-btn" onClick={toggleModal}>
+                <motion.svg
+                  whileHover={{
+                    rotate: 180,
+                  }}
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 384 512"
+                >
+                  <path
+                    fill="#000"
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                  />
+                </motion.svg>
+              </button>
+              <div className="formm">
+                <label>Title :</label>
+                <input
+                  type="text"
+                  className="upd"
+                  onChange={handleTitle}
+                  placeholder="title"
+                />
+              </div>
+              <div className="formm"> 
+                <label>Content :</label>
+                <input
+                  type="text"
+                  className="upd"
+                  onChange={handleDesc}
+                  placeholder="description"
+                />
+              </div>
+              <motion.button
+                className="add"
+                onClick={handleAdd}
+                whileHover={{
+                  scale: 1.1,
+                }}
+              >
+                Add New Note
+              </motion.button>
+            </motion.div>
+          </div>
+        )}
         <div className="Notes">
           <table>
             <thead>
@@ -176,6 +223,7 @@ const Right = () => {
                 <th>Id</th>
                 <th>title</th>
                 <th>content</th>
+                <th>date</th>
                 <th>action</th>
               </tr>
             </thead>
@@ -185,6 +233,7 @@ const Right = () => {
                   <td>{note.id}</td>
                   <td>{note.title}</td>
                   <td>{note.content}</td>
+                  <td>{note.date.slice(0, 10)}</td>
                   <td>
                     <motion.button
                       whileHover={{
@@ -222,64 +271,86 @@ const Right = () => {
         </div>
         <div className="loader">{isloading && <Loading />}</div>
       </div>
-      <motion.div
-        initial={{
-          opacity: 0,
-          x: 100,
-        }}
-        animate={{
-          opacity: 1,
-          x: 0,
-        }}
-        transition={{
-          duration: 2.5,
-        }}
-        className="update-container"
-      >
-        <div className={classup}>
-          <div className="title-button">
-            <p>Update {currid}</p>
-            <button className="Add" onClick={settofalse}>
-              <motion.svg
-                whileHover={{
-                  rotate: 180,
-                }}
-                style={{ filter: "invert(1)" ,width:"100%",height:"100%"}}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 384 512"
-              >
-                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
-              </motion.svg>
-            </button>
-          </div>
-          <br />
-          <input
-            type="text"
-            className="upd"
-            onChange={handletitlee}
-            placeholder="title"
-          />
-          <br />
-          <input
-            type="text"
-            className="upd"
-            onChange={handleContent}
-            placeholder="Content"
-          />
-          <br />
-          <motion.button
-          style={{padding:"5px 20px"}}
-            whileHover={{
-              scale: 1.3,
-            }}
-            onClick={handleUpdatee}
-            className="Update"
-          >
-            {" "}
-            Update{" "}
-          </motion.button>
+      {isloading ? (
+        <div>
+          <Loading />
         </div>
-      </motion.div>
+      ) : (
+        <div className="update-container">
+          <motion.div
+            initial={{
+              opacity: 0,
+              x: 100,
+            }}
+            animate={{
+              opacity: 1,
+              x: 0,
+            }}
+            transition={{
+              duration: 3.5,
+            }}
+            className={classup}
+          >
+            <div className="headBody">
+              <div className="title-button">
+                <button className="add" onClick={settofalse}>
+                  <motion.svg
+                    whileHover={{
+                      rotate: 180,
+                    }}
+                    style={{
+                      filter: "invert(1)",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 384 512"
+                  >
+                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                  </motion.svg>
+                </button>
+              </div>
+              <div className="formUpdate">
+                {loadingUpdate ? (
+                  <div className="animationLoading">
+                    <Loading />
+                  </div>
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      className="upd"
+                      onChange={handletitlee}
+                      defaultValue={uptitle}
+                    />
+
+                    <input
+                      type="text"
+                      className="upd"
+                      onChange={handleContent}
+                      defaultValue={upcontent}
+                    />
+                  </>
+                )}
+
+                <motion.button
+                  style={{ padding: "5px 20px" }}
+                  whileHover={{
+                    scale: 1.1,
+                  }}
+                  onClick={handleUpdatee}
+                  className="Update"
+                >
+                  Update
+                </motion.button>
+              </div>
+            </div>
+            <div className="currid">
+              <p>Current ID: {currid}</p>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </>
   );
 };
