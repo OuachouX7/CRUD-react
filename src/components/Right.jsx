@@ -19,13 +19,16 @@ const Right = () => {
 
   const handleDelete = (id, e) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
-      axios.delete(`https://notes.devlop.tech/api/notes/${id}`, {
-        headers: {
-          Authorization: `Bearer ${myToken}`,
-        },
-      });
-      const par = e.target.parentElement;
-      par.closest("tr").remove();
+      axios.delete(
+        `https://notes.devlop.tech/api/notes/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${myToken}`,
+          },
+        }
+        );
+        const par = e.target.parentElement;
+        par.closest("tr").remove();
     }
   };
 
@@ -55,6 +58,13 @@ const Right = () => {
         setuptitle(res.data.title);
         setUpcontent(res.data.content);
         setloadingUpdate(false);
+      })
+      .catch((err) => {
+        if(err.status === 401){
+
+          alert(err);
+          window.location.reload();
+        }
       });
   };
 
@@ -99,7 +109,17 @@ const Right = () => {
           },
         }
       )
-      .then(alert("Note Updated Successfully"), window.location.reload());
+      .then(() => {
+          alert("Note Updated Successfully");
+          window.location.reload();
+        
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          alert(err);
+          window.location.reload();
+        }
+      });
   };
 
   const handleAdd = () => {
@@ -117,7 +137,16 @@ const Right = () => {
             },
           }
         )
-        .then(alert("Note Added Successfully"), window.location.reload());
+        .then((res) => {
+          if (res.status === 201) {
+            alert("Note Added Successfully");
+            window.location.reload();
+          }
+        })
+        .catch((err) => {
+          alert(err);
+          window.location.reload();
+        });
     }
   };
 
@@ -146,10 +175,12 @@ const Right = () => {
           <h2>Notes List</h2>
           <div className="btns">
             <motion.button
-            whileHover={{
-              scale: 1.1,
-            }}
-            className="add" onClick={toggleModal}>
+              whileHover={{
+                scale: 1.1,
+              }}
+              className="add"
+              onClick={toggleModal}
+            >
               Add Note
             </motion.button>
           </div>
@@ -195,7 +226,7 @@ const Right = () => {
                   placeholder="title"
                 />
               </div>
-              <div className="formm"> 
+              <div className="formm">
                 <label>Content :</label>
                 <input
                   type="text"
@@ -227,7 +258,7 @@ const Right = () => {
                 <th>action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="tbody">
               {notes.map((note) => (
                 <tr className="trr" key={note.id}>
                   <td>{note.id}</td>

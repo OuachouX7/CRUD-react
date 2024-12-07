@@ -126,6 +126,17 @@ svg {
   align-items: center;
   justify-content: space-between;
 }
+.Notes{
+  height: 90vh !important;
+  width: 90%;
+}
+.Notes > table{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: auto;
+}
 .add {
   background-color: #feaf00;
   border: none;
@@ -167,20 +178,35 @@ svg {
 .Notes {
   width: 95%;
 }
-table {
-  margin-top: 5px;
+table > thead > tr.thead{
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-table > tr {
+table > tbody > tr {
   width: 100%;
   background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-table > tr > td {
-  width: calc(100% / 4);
+table > tbody > tr > td {
+  width: calc(100% / 5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   padding: 15px;
 }
-
+table > thead > tr.thead > th {
+  width: calc(100% / 5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  padding: 15px;
+}
 .Delete {
   background-color: transparent;
   border: none;
@@ -352,4 +378,8 @@ table > tr > td {
   width: 100%;
   display: flex;
   justify-content: space-around;
+}
+.tbody{
+  overflow-y: auto;
+  height: 90%;
 }

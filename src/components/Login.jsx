@@ -1,11 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import "../styles/form.css";
 
-const Login = ({setisConnected}) => {
-  const [cin, setcin] = useState("");
-  const [password, setpassword] = useState("");
+const Login = ({ setisConnected }) => {
+  const [cin, setcin] = useState("JH90640");
+  const [password, setpassword] = useState("122333444455556");
+  const [err, seterr] = useState("");
 
   const handleBtn = (e) => {
     e.preventDefault();
@@ -18,9 +19,13 @@ const Login = ({setisConnected}) => {
         localStorage.setItem("firstName", res.data.user.first_name);
         localStorage.setItem("token", res.data.token);
         setisConnected(true);
-      });
+      })
+      .catch((err) => seterr(err.status));
   };
 
+  if (err === 401) {
+    alert("CIN ou mot de passe incorrect");
+  }
 
   const handleCin = (e) => {
     setcin(e.target.value);
@@ -33,9 +38,9 @@ const Login = ({setisConnected}) => {
   return (
     <div className="formContainer">
       <motion.form
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
         <h1 className="bef">CRUD OPERATIONS</h1>
         <h2>SIGN IN</h2>
@@ -59,8 +64,10 @@ const Login = ({setisConnected}) => {
         />
         <br />
         <motion.button
-        whileHover={{ scale: 1.1 }}
-        className="login" onClick={handleBtn}>
+          whileHover={{ scale: 1.1 }}
+          className="login"
+          onClick={handleBtn}
+        >
           Login
         </motion.button>
       </motion.form>
