@@ -19,16 +19,15 @@ const Right = () => {
 
   const handleDelete = (id, e) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
-      axios.delete(
-        `https://notes.devlop.tech/api/notes/${id}`,
-        {
+      axios
+        .delete(`https://notes.devlop.tech/api/notes/${id}`, {
           headers: {
             Authorization: `Bearer ${myToken}`,
           },
-        }
-        );
-        const par = e.target.parentElement;
-        par.closest("tr").remove();
+        })
+        .then(() => {
+          getNotes();
+        });
     }
   };
 
@@ -60,13 +59,14 @@ const Right = () => {
         setloadingUpdate(false);
       })
       .catch((err) => {
-        if(err.status === 401){
-
+        if (err.status === 401) {
           alert(err);
           window.location.reload();
         }
       });
   };
+
+  console.log(loadingUpdate);
 
   const [titlee, settitlee] = useState("");
   const [descr, setdescr] = useState("");
@@ -110,9 +110,7 @@ const Right = () => {
         }
       )
       .then(() => {
-          alert("Note Updated Successfully");
-          window.location.reload();
-        
+        getNotes();
       })
       .catch((err) => {
         if (err.status === 401) {
@@ -139,8 +137,8 @@ const Right = () => {
         )
         .then((res) => {
           if (res.status === 201) {
-            alert("Note Added Successfully");
-            window.location.reload();
+            getNotes();
+            setShowModal(false);
           }
         })
         .catch((err) => {
@@ -152,9 +150,8 @@ const Right = () => {
 
   const classup = isupdating ? "willupadte" : "willnotupdate";
 
-  useEffect(() => {
+  const getNotes = () => {
     setisloading(true);
-
     axios
       .get("https://notes.devlop.tech/api/notes", {
         headers: {
@@ -166,6 +163,10 @@ const Right = () => {
         setisloading(false);
       })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getNotes();
   }, [myToken]);
 
   return (
@@ -258,49 +259,52 @@ const Right = () => {
                 <th>action</th>
               </tr>
             </thead>
-            <tbody className="tbody">
-              {notes.map((note) => (
-                <tr className="trr" key={note.id}>
-                  <td>{note.id}</td>
-                  <td>{note.title}</td>
-                  <td>{note.content}</td>
-                  <td>{note.date.slice(0, 10)}</td>
-                  <td>
-                    <motion.button
-                      whileHover={{
-                        scale: 1.3,
-                      }}
-                      className="Delete"
-                      onClick={(e) => handleDelete(note.id, e)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"
+            {isloading ? (
+              <Loading />
+            ) : (
+              <tbody className="tbody">
+                {notes.map((note) => (
+                  <tr className="trr" key={note.id}>
+                    <td>{note.id}</td>
+                    <td>{note.title}</td>
+                    <td>{note.content}</td>
+                    <td>{note.date.slice(0, 10)}</td>
+                    <td>
+                      <motion.button
+                        whileHover={{
+                          scale: 1.3,
+                        }}
+                        className="Delete"
+                        onClick={(e) => handleDelete(note.id, e)}
                       >
-                        <path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
-                      </svg>
-                    </motion.button>
-                    <motion.button
-                      whileHover={{
-                        scale: 1.3,
-                      }}
-                      onClick={() => handleUpdate(note.id)}
-                      className="Delete update"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                        >
+                          <path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                        </svg>
+                      </motion.button>
+                      <motion.button
+                        whileHover={{
+                          scale: 1.3,
+                        }}
+                        onClick={() => handleUpdate(note.id)}
+                        className="Delete update"
                       >
-                        <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
-                      </svg>
-                    </motion.button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 512 512"
+                        >
+                          <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
+                        </svg>
+                      </motion.button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
           </table>
         </div>
-        <div className="loader">{isloading && <Loading />}</div>
       </div>
       {isloading ? (
         <div>
@@ -318,7 +322,7 @@ const Right = () => {
               x: 0,
             }}
             transition={{
-              duration: 3.5,
+              duration: 0.5,
             }}
             className={classup}
           >

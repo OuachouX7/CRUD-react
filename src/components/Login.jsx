@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import "../styles/form.css";
 
 const Login = ({ setisConnected }) => {
-  const [cin, setcin] = useState("");
-  const [password, setpassword] = useState("");
+  const [cin, setcin] = useState("JH90640");
+  const [password, setpassword] = useState("122333444455556");
   const [err, seterr] = useState("");
 
   const handleBtn = (e) => {
@@ -19,8 +19,12 @@ const Login = ({ setisConnected }) => {
         localStorage.setItem("firstName", res.data.user.first_name);
         localStorage.setItem("token", res.data.token);
         setisConnected(true);
+        console.log(res);
       })
-      .catch((err) => seterr(err.status));
+      .catch((err) => {
+        seterr(err.status);
+        console.log(err);
+      });
   };
 
   const handleCin = (e) => {
@@ -66,7 +70,7 @@ const Login = ({ setisConnected }) => {
         >
           Login
         </motion.button>
-      {err === 401 && <p className="err">Wrong cin or password</p>}
+        {err === 401 && <p className="err">Wrong cin or password</p>}
       </motion.form>
     </div>
   );
